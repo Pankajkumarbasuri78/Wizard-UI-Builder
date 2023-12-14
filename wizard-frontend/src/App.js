@@ -8,6 +8,8 @@ import UIPlanning from "./Common/UIPlanning";
 import TextBoxes from "./Component/InputField/TextBoxes";
 import CheckBox from "./Component/InputField/Checkbox";
 import MultiSelectOption from "./Component/InputField/MultiSelectOption";
+import Dropdown from "./Component/InputField/Dropdown";
+import DesignPage from "./Pages/DesignPage";
 const App = () => {
   return (
     <>
@@ -24,9 +26,14 @@ const App = () => {
         <Route path="/checkbox" element={<CheckBox/>}/>
         <Route path="/textbox" element={<TextBoxes/>}/>
         <Route path="/MultiSelect" element={<MultiSelectOption/>}/>
+        <Route path="/dropdown" element={<Dropdown/>}/>
+        <Route path="/designPage" element={<DesignPage/>}/>
       </Routes>
     </>
   );
 };
 
 export default App;
+
+
+

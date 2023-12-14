@@ -1,99 +1,102 @@
 import React, { useState } from 'react';
-import { Typography, TextField, Button, FormControl, FormGroup, FormControlLabel, Checkbox, Box } from '@mui/material';
+import { Typography, TextField, Button, FormControl, Box, Checkbox, IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import '../../CSS/textboxes.css';
 
-const CheckBox = () => {
-  const [question, setQuestion] = useState('');
-  const [options, setOptions] = useState([]);
-  const [selectedAnswers, setSelectedAnswers] = useState([]);
+const CheckboxComponent = () => {
+  const [formData, setFormData] = useState({
+    question: '',
+    options: [],
+  });
 
   const handleQuestionChange = (e) => {
-    setQuestion(e.target.value);
+    setFormData({ ...formData, question: e.target.value });
   };
 
   const handleOptionChange = (index, value) => {
-    const updatedOptions = [...options];
+    const updatedOptions = [...formData.options];
     updatedOptions[index] = value;
-    setOptions(updatedOptions);
-  };
-
-  const handleAnswerChange = (e, index) => {
-    const updatedSelectedAnswers = [...selectedAnswers];
-    updatedSelectedAnswers[index] = e.target.checked;
-    setSelectedAnswers(updatedSelectedAnswers);
+    setFormData({ ...formData, options: updatedOptions });
   };
 
   const addOption = () => {
-    if (options.length < 4) {
-      setOptions([...options, '']);
-      setSelectedAnswers([...selectedAnswers, false]);
+    if (formData.options.length < 4) {
+      setFormData({ ...formData, options: [...formData.options, ''] });
     }
+  };
+
+  const removeOption = (index) => {
+    const updatedOptions = [...formData.options];
+    updatedOptions.splice(index, 1);
+    setFormData({ ...formData, options: updatedOptions });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here, you can perform actions with the submitted data (question, options, selectedAnswers)
-    console.log('Submitted:', { question, options, selectedAnswers });
-    // Clear the form after submission
-    setQuestion('');
-    setOptions([]);
-    setSelectedAnswers([]);
+    
+    console.log('Submitted:', { formData });
+   
+    setFormData({
+      question: '',
+      options: [],
+    });
   };
 
   return (
-    <Box sx={{ maxWidth: 600, margin: 'auto', padding: '20px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
+    <Box sx={{ maxWidth: 600, margin: 'auto', padding: '20px', backgroundColor: '#F3F5F0', borderRadius: '8px', boxShadow: '0px 3px 6px #00000029' }}>
       <Typography variant="h5" gutterBottom>
-        Create Google Checkbox Form
+        Create Your Checkbox Component
       </Typography>
       <form onSubmit={handleSubmit}>
-        <TextField
-          label="Question"
-          fullWidth
-          value={question}
-          onChange={handleQuestionChange}
-          margin="normal"
-          variant="outlined"
-        />
-        <FormControl component="fieldset" sx={{ mb: 2 }}>
-          <Typography variant="subtitle1" gutterBottom>
-            Add Options
-          </Typography>
-          <FormGroup>
-            {options.map((option, index) => (
-              <FormControlLabel
-                key={index}
-                control={
-                  <Checkbox
-                    checked={selectedAnswers[index] || false}
-                    onChange={(e) => handleAnswerChange(e, index)}
-                  />
-                }
-                label={
-                  <TextField
-                    value={option}
-                    onChange={(e) => handleOptionChange(index, e.target.value)}
-                    fullWidth
-                    margin="normal"
-                    variant="outlined"
-                  />
-                }
+        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: '70px', gap: '10px' }}>
+          <TextField
+            label="Question"
+            fullWidth
+            value={formData.question}
+            onChange={handleQuestionChange}
+            margin="normal"
+            variant="outlined"
+            sx={{ mb: 2 }}
+          />
+          <Button variant="contained" color="primary" type="submit" sx={{ display: 'flex', height: '53px' }}>
+            Submit
+          </Button>
+        </div>
+
+        <FormControl component="fieldset" sx={{ mb: 4, mt: 2 }}>
+          {formData.options.map((option, index) => (
+            <div key={index} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom: '8px', backgroundColor: '#ffffff', boxShadow: '0px 3px 6px #00000029', borderRadius: '8px', padding: '8px' }}>
+              <Checkbox
+                value={option}
+                onChange={(e) => handleOptionChange(index, e.target.checked ? e.target.value : '')}
+                sx={{ mr: 1 }}
               />
-            ))}
-          </FormGroup>
+              <TextField
+                label={`Option ${index + 1}`}
+                value={option}
+                onChange={(e) => handleOptionChange(index, e.target.value)}
+                fullWidth
+                variant="outlined"
+                sx={{ flex: 1, mr: 1 }}
+              />
+              <IconButton onClick={() => removeOption(index)}>
+                <DeleteIcon />
+              </IconButton>
+            </div>
+          ))}
           <Button
             variant="contained"
             onClick={addOption}
-            disabled={options.length === 4}
+            disabled={formData.options.length === 4}
             sx={{ mt: 2 }}
           >
             Add Option
           </Button>
         </FormControl>
-        <Button variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
-          Submit
-        </Button>
       </form>
     </Box>
   );
 };
 
-export default CheckBox;
+export default CheckboxComponent;
+

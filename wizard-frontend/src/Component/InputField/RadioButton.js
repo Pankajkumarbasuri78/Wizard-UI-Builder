@@ -1,100 +1,102 @@
 import React, { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import AddIcon from '@mui/icons-material/Add';
+import { Typography, TextField, Button, FormControl, Box, IconButton, Radio, RadioGroup, FormControlLabel } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import '../../CSS/textboxes.css';
 
 const RadioButton = () => {
-  const [questions, setQuestions] = useState([]);
-  const [currentQuestion, setCurrentQuestion] = useState('');
-  const [options, setOptions] = useState([]);
-  const [currentOption, setCurrentOption] = useState('');
-  const [selectedAnswer, setSelectedAnswer] = useState('');
+  const [formData, setFormData] = useState({
+    question: '',
+    options: [],
+    selectedOption: '',
+  });
 
   const handleQuestionChange = (e) => {
-    setCurrentQuestion(e.target.value);
+    setFormData({ ...formData, question: e.target.value });
   };
 
-  const handleOptionChange = (e) => {
-    setCurrentOption(e.target.value);
-  };
-
-  const addQuestion = () => {
-    if (currentQuestion.trim() !== '' && options.length >= 2 && options.length <= 4) {
-      console.log('Added Question:', { question: currentQuestion, options, answer: selectedAnswer });
-      setQuestions([...questions, { question: currentQuestion, options, answer: selectedAnswer }]);
-      setCurrentQuestion('');
-      setOptions([]);
-      setSelectedAnswer('');
-    }
+  const handleOptionChange = (index, value) => {
+    const updatedOptions = [...formData.options];
+    updatedOptions[index] = value;
+    setFormData({ ...formData, options: updatedOptions });
   };
 
   const addOption = () => {
-    if (currentOption.trim() !== '' && options.length < 4) {
-      setOptions([...options, currentOption]);
-      setCurrentOption('');
+    if (formData.options.length < 4) {
+      setFormData({ ...formData, options: [...formData.options, ''] });
     }
   };
 
+  const removeOption = (index) => {
+    const updatedOptions = [...formData.options];
+    updatedOptions.splice(index, 1);
+    setFormData({ ...formData, options: updatedOptions });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    console.log('Submitted:', formData);
+   
+    setFormData({
+      question: '',
+      options: [],
+      selectedOption: '',
+    });
+  };
+
   return (
-    <Box sx={{ maxWidth: 600, margin: 'auto', padding: '20px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
+    <Box sx={{ maxWidth: 600, margin: 'auto', padding: '20px', backgroundColor: '#F3F5F0', borderRadius: '8px', boxShadow: '0px 3px 6px #00000029' }}>
       <Typography variant="h5" gutterBottom>
-        Provide Field Heading
+        Create Your RadioButton Component
       </Typography>
-      <TextField
-        label="Question"
-        fullWidth
-        value={currentQuestion}
-        onChange={handleQuestionChange}
-        margin="normal"
-        variant="outlined"
-      />
-      <FormControl component="fieldset" sx={{ mb: 2 }}>
-        <Typography variant="subtitle1" gutterBottom>
-          Add Options
-        </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <form onSubmit={handleSubmit}>
+        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: '70px', gap: '10px' }}>
           <TextField
-            label="Option"
+            label="Question"
             fullWidth
-            value={currentOption}
-            onChange={handleOptionChange}
+            value={formData.question}
+            onChange={handleQuestionChange}
             margin="normal"
             variant="outlined"
+            sx={{ mb: 2 }}
           />
+          <Button variant="contained" color="primary" type="submit" sx={{ display: 'flex', height: '53px' }}>
+            Submit
+          </Button>
+        </div>
+
+        <FormControl component="fieldset" sx={{ mb: 4, mt: 2 }}>
+          <RadioGroup value={formData.selectedOption} onChange={(e) => setFormData({ ...formData, selectedOption: e.target.value })}>
+            {formData.options.map((option, index) => (
+              <div key={index} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom: '8px', backgroundColor: '#ffffff', boxShadow: '0px 3px 6px #00000029', borderRadius: '8px', padding: '8px' }}>
+                <FormControlLabel
+                  value={option}
+                  control={<Radio />}
+                  label={
+                    <TextField
+                      value={option}
+                      onChange={(e) => handleOptionChange(index, e.target.value)}
+                      fullWidth
+                      variant="outlined"
+                    />
+                  }
+                />
+                <IconButton onClick={() => removeOption(index)}>
+                  <DeleteIcon />
+                </IconButton>
+              </div>
+            ))}
+          </RadioGroup>
           <Button
             variant="contained"
             onClick={addOption}
-            disabled={options.length === 4 || currentOption.trim() === ''}
-            sx={{ ml: 2 }}
+            disabled={formData.options.length === 4}
+            sx={{ mt: 2 }}
           >
-            <AddIcon />
+            Add Option
           </Button>
-        </Box>
-        <RadioGroup
-          aria-label="radios"
-          name="radios"
-          value={selectedAnswer}
-          onChange={(e) => setSelectedAnswer(e.target.value)}
-        >
-          {options.map((option, index) => (
-            <FormControlLabel
-              key={index}
-              value={option}
-              control={<Radio />}
-              label={option}
-            />
-          ))}
-        </RadioGroup>
-      </FormControl>
-      <Button variant="contained" color="primary" onClick={addQuestion} disabled={currentQuestion.trim() === '' || options.length < 2}>
-        Add Question
-      </Button>
+        </FormControl>
+      </form>
     </Box>
   );
 };

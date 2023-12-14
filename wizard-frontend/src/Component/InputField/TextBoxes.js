@@ -4,38 +4,42 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import '../../CSS/textboxes.css';
 
 const TextBoxes = () => {
-  const [question, setQuestion] = useState('');
-  const [options, setOptions] = useState([]);
+  const [formData, setFormData] = useState({
+    question: '',
+    options: [],
+  });
 
   const handleQuestionChange = (e) => {
-    setQuestion(e.target.value);
+    setFormData({ ...formData, question: e.target.value });
   };
 
   const handleOptionChange = (index, value) => {
-    const updatedOptions = [...options];
+    const updatedOptions = [...formData.options];
     updatedOptions[index] = value;
-    setOptions(updatedOptions);
+    setFormData({ ...formData, options: updatedOptions });
   };
 
   const addOption = () => {
-    if (options.length < 4) {
-      setOptions([...options, '']);
+    if (formData.options.length < 4) {
+      setFormData({ ...formData, options: [...formData.options, ''] });
     }
   };
 
   const removeOption = (index) => {
-    const updatedOptions = [...options];
+    const updatedOptions = [...formData.options];
     updatedOptions.splice(index, 1);
-    setOptions(updatedOptions);
+    setFormData({ ...formData, options: updatedOptions });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    console.log('Submitted:', { question, options });
+    console.log('Submitted:', formData);
    
-    setQuestion('');
-    setOptions([]);
+    setFormData({
+      question: '',
+      options: [],
+    });
   };
 
   return (
@@ -48,7 +52,7 @@ const TextBoxes = () => {
           <TextField
             label="Question"
             fullWidth
-            value={question}
+            value={formData.question}
             onChange={handleQuestionChange}
             margin="normal"
             variant="outlined"
@@ -60,7 +64,7 @@ const TextBoxes = () => {
         </div>
 
         <FormControl component="fieldset" sx={{ mb: 4, mt: 2 }}>
-          {options.map((option, index) => (
+          {formData.options.map((option, index) => (
             <div key={index} className='optionStyle'>
               <TextField
                 label={`Option ${index + 1}`}
@@ -78,7 +82,7 @@ const TextBoxes = () => {
           <Button
             variant="contained"
             onClick={addOption}
-            disabled={options.length === 4}
+            disabled={formData.options.length === 4}
             sx={{ mt: 2 }}
           >
             Add Option

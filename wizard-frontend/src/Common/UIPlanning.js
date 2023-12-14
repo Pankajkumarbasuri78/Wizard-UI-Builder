@@ -1,57 +1,116 @@
 import React, { useState } from 'react';
+import TextBoxes from '../Component/InputField/TextBoxes';
+import CheckboxComponent from '../Component/InputField/Checkbox';
+import Dropdown from '../Component/InputField/Dropdown';
+import MultiSelectOption from '../Component/InputField/MultiSelectOption';
 import RadioButton from '../Component/InputField/RadioButton';
-import Checkbox from '../Component/InputField/Checkbox';
-
+import Button from '@mui/material/Button';
+import '../CSS/UIPlanning.css';
+import { useLocation } from 'react-router-dom';
 
 const UIPlanning = () => {
-  const [renderedComponents, setRenderedComponents] = useState([]);
-  const [selectedComponent, setSelectedComponent] = useState(null);
+  const location = useLocation();
+  const formDataFromLocation = location.state.formData;
 
-  const handleComponentClick = (component) => {
-    setSelectedComponent(component);
+  //const totalStep = formData.totalSteps;
+  
+  const [completeFormData, setCompleteFormState] = useState({
+    textBoxes: [],
+    checkboxes: [],
+    dropdowns: [],
+    multiSelectOptions: [],
+    radioButtons: []
+  });
+  
+  const [selectedComponents, setSelectedComponents] = useState([]);
+
+  const handleOptionClick = (option) => {
+    switch (option) {
+      case 'TextBoxes':
+        setSelectedComponents([...selectedComponents, <TextBoxes key={selectedComponents.length} />]);
+        break;
+      case 'CheckboxComponent':
+        setSelectedComponents([...selectedComponents, <CheckboxComponent key={selectedComponents.length} />]);
+        break;
+      case 'DropdownComponent':
+        setSelectedComponents([...selectedComponents, <Dropdown key={selectedComponents.length} />]);
+        break;
+      case 'MultiSelectOptionComponent':
+        setSelectedComponents([...selectedComponents, <MultiSelectOption key={selectedComponents.length} />]);
+        break;
+      case 'RadioButtonComponent':
+        setSelectedComponents([...selectedComponents, <RadioButton key={selectedComponents.length} />]);
+        break;
+      default:
+        break;
+    }
   };
 
-  const sidebarItems = [
-    { label: 'Text Box', component: <RadioButton /> },
-    { label: 'Radio Button', component: <Checkbox /> },
-    { label: 'Checkboxes', component: <RadioButton /> },
-    { label: 'Dropdown', component: <Checkbox /> },
-    // Add more items as needed
-  ];
+  const handleRemoveComponent = (index) => {
+    const updatedComponents = [...selectedComponents];
+    updatedComponents.splice(index, 1);
+    setSelectedComponents(updatedComponents);
+  };
+  
+ 
+
+  console.log('Form State:', completeFormData);
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
-      <div style={{ width: '25%', backgroundColor: '#f0f0f0', padding: '20px' }}>
-        <h2 style={{ marginBottom: '20px' }}>Input Field Components</h2>
-        {sidebarItems.map((item, index) => (
-          <div key={index} style={{ marginBottom: '10px' }}>
-            <button onClick={() => handleComponentClick(item.component)} style={buttonStyles}>
-              {item.label}
-            </button>
-          </div>
-        ))}
+    <>
+      <div style={{ display: 'flex' }}>
+        
+      <div className='uiContainer' style={{ position: 'sticky', top: 0 }}>
+        <h2>Select a Form Element</h2>
+        <div className='UiWrapper'>
+          <Button variant="contained" color="success" 
+                  onClick={() => handleOptionClick('TextBoxes')}
+                  >
+            Textbox
+          </Button>
+          <Button variant="contained" color="success" 
+                  onClick={() => handleOptionClick('CheckboxComponent')}
+                  >
+            Checkbox
+          </Button>
+          <Button variant="contained" color="success" 
+                  onClick={() => handleOptionClick('DropdownComponent')}
+                  >
+            Dropdown
+          </Button>
+          <Button variant="contained" color="success" 
+                  onClick={() => handleOptionClick('MultiSelectOptionComponent')}
+                  >
+            MultiSelect Option
+          </Button>
+          <Button variant="contained" color="success" 
+                  onClick={() => handleOptionClick('RadioButtonComponent')}
+                  >
+            Radio Button
+          </Button>
+        </div>
       </div>
-      <div style={{ width: '75%', padding: '20px' }}>
-        <h2 style={{ marginBottom: '20px' }}>Rendered Components</h2>
-        {selectedComponent && <div style={{ marginBottom: '10px' }}>{selectedComponent}</div>}
-        {renderedComponents.map((component, index) => (
-          <div key={index} style={{ marginBottom: '10px' }}>
-            {component}
+
+      <div style={{ width: '80%', padding: '20px' }}>
+         <h1>{formDataFromLocation.title}</h1>
+        {selectedComponents.map((Component, index) => (
+          <div key={index} style={{ marginBottom: '20px', position: 'relative' }}>
+            {Component}
+            <Button
+              variant="contained"
+              color="error"
+              onClick={() => handleRemoveComponent(index)}
+              style={{ position: 'absolute', top: 100, right: 0 }}
+            >
+              Remove
+            </Button>
           </div>
         ))}
       </div>
     </div>
+      
+    </>
   );
 };
 
-const buttonStyles = {
-  backgroundColor: '#4caf50',
-  color: 'white',
-  border: 'none',
-  padding: '10px 20px',
-  borderRadius: '5px',
-  cursor: 'pointer',
-};
-
 export default UIPlanning;
-

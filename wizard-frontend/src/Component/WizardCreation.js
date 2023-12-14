@@ -4,8 +4,12 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Navbar from "../Common/Navbar";
 import Typography from '@mui/material/Typography';
+import { useNavigate } from "react-router-dom";
 
 const WizardCreation = () => {
+
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -16,7 +20,7 @@ const WizardCreation = () => {
     const name = e.target.name;
     const value = e.target.value;
     //const { name, value } = e.target;
-    // Update the form data with the new value for the specific field ('name' corresponds to the field name)
+    
     setFormData({ ...formData, [name]: value });
   };
 
@@ -30,12 +34,13 @@ const WizardCreation = () => {
         description: "",
         totalSteps: "",
       });
+
+      navigate('/ui',{ state: { formData } })
   };
 
   const handleNextClick = () => {
-    // Perform actions when the "Next" button is clicked
     console.log('Next button clicked');
-    // You can add additional logic here for navigating to the next step, etc.
+    
   };
 
   
@@ -84,7 +89,7 @@ const WizardCreation = () => {
             type="submit"
             sx={{ mt: 2, mr: 30 }}
           >
-            Submit
+            Next
           </Button>
           <Button
             variant="contained"
