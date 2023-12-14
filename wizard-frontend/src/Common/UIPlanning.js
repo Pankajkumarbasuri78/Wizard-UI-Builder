@@ -26,21 +26,37 @@ const UIPlanning = () => {
 
   const handleOptionClick = (option) => {
     switch (option) {
+
       case 'TextBoxes':
-        setSelectedComponents([...selectedComponents, <TextBoxes key={selectedComponents.length} />]);
+        setSelectedComponents([...selectedComponents, 
+        <TextBoxes setCompleteFormState = {setCompleteFormState} completeFormData={completeFormData} 
+        key={selectedComponents.length} />]);
         break;
+
       case 'CheckboxComponent':
-        setSelectedComponents([...selectedComponents, <CheckboxComponent key={selectedComponents.length} />]);
+        setSelectedComponents([...selectedComponents, 
+        <CheckboxComponent setCompleteFormState = {setCompleteFormState} completeFormData={completeFormData}
+        key={selectedComponents.length} />]);
         break;
+
       case 'DropdownComponent':
-        setSelectedComponents([...selectedComponents, <Dropdown key={selectedComponents.length} />]);
+        setSelectedComponents([...selectedComponents, 
+        <Dropdown setCompleteFormState = {setCompleteFormState} completeFormData={completeFormData}
+        key={selectedComponents.length} />]);
         break;
+
       case 'MultiSelectOptionComponent':
-        setSelectedComponents([...selectedComponents, <MultiSelectOption key={selectedComponents.length} />]);
+        setSelectedComponents([...selectedComponents, 
+        <MultiSelectOption setCompleteFormState = {setCompleteFormState} completeFormData={completeFormData}
+        key={selectedComponents.length} />]);
         break;
+
       case 'RadioButtonComponent':
-        setSelectedComponents([...selectedComponents, <RadioButton key={selectedComponents.length} />]);
+        setSelectedComponents([...selectedComponents, 
+        <RadioButton setCompleteFormState = {setCompleteFormState} completeFormData={completeFormData}
+        key={selectedComponents.length} />]);
         break;
+        
       default:
         break;
     }
@@ -49,7 +65,7 @@ const UIPlanning = () => {
   const handleRemoveComponent = (index) => {
     const updatedComponents = [...selectedComponents];
     updatedComponents.splice(index, 1);
-    setSelectedComponents(updatedComponents);
+    setSelectedComponents(updatedComponents); 
   };
   
  

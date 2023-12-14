@@ -3,7 +3,7 @@ import { Typography, TextField, Button, FormControl, Box, IconButton, Radio, Rad
 import DeleteIcon from '@mui/icons-material/Delete';
 import '../../CSS/textboxes.css';
 
-const RadioButton = () => {
+const RadioButton = ({setCompleteFormState,completeFormData}) => {
   const [formData, setFormData] = useState({
     question: '',
     options: [],
@@ -37,6 +37,12 @@ const RadioButton = () => {
     
     console.log('Submitted:', formData);
    
+    const radioButtonUpdate = structuredClone(completeFormData);
+
+    radioButtonUpdate.radioButtons.push(formData);
+
+    setCompleteFormState(radioButtonUpdate);
+    
     setFormData({
       question: '',
       options: [],

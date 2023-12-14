@@ -3,7 +3,7 @@ import { Typography, TextField, Button, FormControl, Box, IconButton } from '@mu
 import DeleteIcon from '@mui/icons-material/Delete';
 import '../../CSS/textboxes.css';
 
-const TextBoxes = () => {
+const TextBoxes = ({setCompleteFormState,completeFormData}) => {
   const [formData, setFormData] = useState({
     question: '',
     options: [],
@@ -35,7 +35,13 @@ const TextBoxes = () => {
     e.preventDefault();
     
     console.log('Submitted:', formData);
-   
+    
+    const textBoxUpdate = structuredClone(completeFormData);
+
+    textBoxUpdate.textBoxes.push(formData);
+
+    setCompleteFormState(textBoxUpdate);
+    
     setFormData({
       question: '',
       options: [],

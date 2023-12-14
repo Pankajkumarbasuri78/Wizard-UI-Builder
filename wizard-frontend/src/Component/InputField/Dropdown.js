@@ -4,7 +4,7 @@ import { Typography, TextField, Button, FormControl, Box, IconButton, MenuItem, 
 import DeleteIcon from '@mui/icons-material/Delete';
 import '../../CSS/textboxes.css';
 
-const Dropdown = () => {
+const Dropdown = ({setCompleteFormState,completeFormData}) => {
   const [formData, setFormData] = useState({
     question: '',
     options: [],
@@ -36,7 +36,13 @@ const Dropdown = () => {
     e.preventDefault();
     
     console.log('Submitted:', { formData });
-   
+
+    const dropdownUpdate = structuredClone(completeFormData);
+
+    dropdownUpdate.radioButtons.push(formData);
+
+    setCompleteFormState(dropdownUpdate);
+
     setFormData({
       question: '',
       options: [],

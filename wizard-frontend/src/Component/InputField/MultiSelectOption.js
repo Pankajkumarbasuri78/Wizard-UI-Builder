@@ -3,7 +3,7 @@ import { Typography, TextField, Button, FormControl, Box, IconButton } from '@mu
 import DeleteIcon from '@mui/icons-material/Delete';
 import '../../CSS/textboxes.css';
 
-const MultiSelectOption = () => {
+const MultiSelectOption = ({setCompleteFormState,completeFormData}) => {
   const [formData, setFormData] = useState({
     question: '',
     options: [],
@@ -35,7 +35,12 @@ const MultiSelectOption = () => {
     e.preventDefault();
     
     console.log('Submitted:', { formData });
-   
+    const multiSelectUpdate = structuredClone(completeFormData);
+
+    multiSelectUpdate.radioButtons.push(formData);
+
+    setCompleteFormState(multiSelectUpdate);
+    
     setFormData({
       question: '',
       options: [],
