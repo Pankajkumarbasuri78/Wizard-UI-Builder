@@ -151,8 +151,8 @@ const UIPlanning = () => {
         
       </div>
 
-      <div style={{ width: '80%', padding: '20px' }}>
-         <h1>{formDataFromLocation.title}</h1>
+      <div className='renderedContainer'>
+         <h1 style={{display:'flex',justifyContent:'center',marginBottom:'30px'}}>{formDataFromLocation.title}</h1>
         {selectedComponents.map((Component, index) => (
           <div key={index} style={{ marginBottom: '20px', position: 'relative' }}>
             {Component}
