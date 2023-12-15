@@ -3,7 +3,9 @@ import { Typography, TextField, Button, FormControl, Box, IconButton, Radio, Rad
 import DeleteIcon from '@mui/icons-material/Delete';
 import '../../CSS/textboxes.css';
 
-const RadioButton = ({setCompleteFormState,completeFormData}) => {
+const RadioButton = ({setCompleteFormState,completeFormData,onRemove}) => {
+
+
   const [formData, setFormData] = useState({
     question: '',
     options: [],
@@ -34,7 +36,9 @@ const RadioButton = ({setCompleteFormState,completeFormData}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
+    onRemove();
+
     console.log('Submitted:', formData);
    
     const radioButtonUpdate = structuredClone(completeFormData);
@@ -42,12 +46,14 @@ const RadioButton = ({setCompleteFormState,completeFormData}) => {
     radioButtonUpdate.radioButtons.push(formData);
 
     setCompleteFormState(radioButtonUpdate);
+
     
     setFormData({
       question: '',
       options: [],
       selectedOption: '',
     });
+
   };
 
   return (
@@ -108,3 +114,5 @@ const RadioButton = ({setCompleteFormState,completeFormData}) => {
 };
 
 export default RadioButton;
+
+

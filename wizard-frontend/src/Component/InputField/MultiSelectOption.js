@@ -3,7 +3,7 @@ import { Typography, TextField, Button, FormControl, Box, IconButton } from '@mu
 import DeleteIcon from '@mui/icons-material/Delete';
 import '../../CSS/textboxes.css';
 
-const MultiSelectOption = ({setCompleteFormState,completeFormData}) => {
+const MultiSelectOption = ({setCompleteFormState,completeFormData,onRemove}) => {
   const [formData, setFormData] = useState({
     question: '',
     options: [],
@@ -40,7 +40,7 @@ const MultiSelectOption = ({setCompleteFormState,completeFormData}) => {
     multiSelectUpdate.radioButtons.push(formData);
 
     setCompleteFormState(multiSelectUpdate);
-    
+    onRemove()
     setFormData({
       question: '',
       options: [],

@@ -3,10 +3,11 @@ import { Typography, TextField, Button, FormControl, Box, Checkbox, IconButton }
 import DeleteIcon from '@mui/icons-material/Delete';
 import '../../CSS/textboxes.css';
 
-const CheckboxComponent = ({setCompleteFormState,completeFormData}) => {
+const CheckboxComponent = ({setCompleteFormState,completeFormData,onRemove,globalSeq,setGlobalSeq}) => {
   const [formData, setFormData] = useState({
     question: '',
     options: [],
+    checkSeq: globalSeq
   });
 
   const handleQuestionChange = (e) => {
@@ -35,13 +36,14 @@ const CheckboxComponent = ({setCompleteFormState,completeFormData}) => {
     e.preventDefault();
     
     console.log('Submitted:', { formData });
+    setGlobalSeq(globalSeq+1);
    
     const checkBoxUpdate = structuredClone(completeFormData);
 
     checkBoxUpdate.checkboxes.push(formData);
 
     setCompleteFormState(checkBoxUpdate);
-    
+    onRemove();
     setFormData({
       question: '',
       options: [],

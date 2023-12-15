@@ -3,10 +3,11 @@ import { Typography, TextField, Button, FormControl, Box, IconButton } from '@mu
 import DeleteIcon from '@mui/icons-material/Delete';
 import '../../CSS/textboxes.css';
 
-const TextBoxes = ({setCompleteFormState,completeFormData}) => {
+const TextBoxes = ({setCompleteFormState,completeFormData,onRemove,globalSeq,setGlobalSeq}) => {
   const [formData, setFormData] = useState({
     question: '',
     options: [],
+    seq: globalSeq
   });
 
   const handleQuestionChange = (e) => {
@@ -33,7 +34,9 @@ const TextBoxes = ({setCompleteFormState,completeFormData}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
+    setGlobalSeq(globalSeq+1);
+
     console.log('Submitted:', formData);
     
     const textBoxUpdate = structuredClone(completeFormData);
@@ -41,7 +44,10 @@ const TextBoxes = ({setCompleteFormState,completeFormData}) => {
     textBoxUpdate.textBoxes.push(formData);
 
     setCompleteFormState(textBoxUpdate);
+    onRemove();
+
     
+
     setFormData({
       question: '',
       options: [],

@@ -4,7 +4,7 @@ import { Typography, TextField, Button, FormControl, Box, IconButton, MenuItem, 
 import DeleteIcon from '@mui/icons-material/Delete';
 import '../../CSS/textboxes.css';
 
-const Dropdown = ({setCompleteFormState,completeFormData}) => {
+const Dropdown = ({setCompleteFormState,completeFormData,onRemove}) => {
   const [formData, setFormData] = useState({
     question: '',
     options: [],
@@ -43,6 +43,7 @@ const Dropdown = ({setCompleteFormState,completeFormData}) => {
 
     setCompleteFormState(dropdownUpdate);
 
+    onRemove();
     setFormData({
       question: '',
       options: [],

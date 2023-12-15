@@ -6,11 +6,17 @@ import MultiSelectOption from '../Component/InputField/MultiSelectOption';
 import RadioButton from '../Component/InputField/RadioButton';
 import Button from '@mui/material/Button';
 import '../CSS/UIPlanning.css';
-import { useLocation } from 'react-router-dom';
+import {  useLocation,useNavigate } from 'react-router-dom';
 
 const UIPlanning = () => {
+
+  const navigate = useNavigate();
+
   const location = useLocation();
   const formDataFromLocation = location.state.formData;
+
+  const [globalSeq,setGlobalSeq] = useState(1);
+  
 
   //const totalStep = formData.totalSteps;
   
@@ -29,34 +35,60 @@ const UIPlanning = () => {
 
       case 'TextBoxes':
         setSelectedComponents([...selectedComponents, 
-        <TextBoxes setCompleteFormState = {setCompleteFormState} completeFormData={completeFormData} 
-        key={selectedComponents.length} />]);
+        <TextBoxes 
+          setCompleteFormState = {setCompleteFormState} 
+          completeFormData={completeFormData} 
+          key={selectedComponents.length} 
+          onRemove = {()=>handleRemoveComponent(selectedComponents.length)}
+          globalSeq={globalSeq}
+          setGlobalSeq={setGlobalSeq}
+          />]);
         break;
 
       case 'CheckboxComponent':
         setSelectedComponents([...selectedComponents, 
-        <CheckboxComponent setCompleteFormState = {setCompleteFormState} completeFormData={completeFormData}
-        key={selectedComponents.length} />]);
+        <CheckboxComponent 
+           setCompleteFormState = {setCompleteFormState} 
+           completeFormData={completeFormData}
+           key={selectedComponents.length} 
+           onRemove = {()=>handleRemoveComponent(selectedComponents.length)}
+           globalSeq={globalSeq}
+           setGlobalSeq={setGlobalSeq}
+           />]);
         break;
 
       case 'DropdownComponent':
         setSelectedComponents([...selectedComponents, 
-        <Dropdown setCompleteFormState = {setCompleteFormState} completeFormData={completeFormData}
-        key={selectedComponents.length} />]);
+        <Dropdown 
+          setCompleteFormState = {setCompleteFormState} 
+          completeFormData={completeFormData}
+          key={selectedComponents.length} 
+          onRemove = {()=>handleRemoveComponent(selectedComponents.length)}
+        />]);
         break;
 
       case 'MultiSelectOptionComponent':
         setSelectedComponents([...selectedComponents, 
-        <MultiSelectOption setCompleteFormState = {setCompleteFormState} completeFormData={completeFormData}
-        key={selectedComponents.length} />]);
+        <MultiSelectOption 
+           setCompleteFormState = {setCompleteFormState} 
+           completeFormData={completeFormData}
+           key={selectedComponents.length} 
+           onRemove = {()=>handleRemoveComponent(selectedComponents.length)}
+          />]);
         break;
 
       case 'RadioButtonComponent':
         setSelectedComponents([...selectedComponents, 
-        <RadioButton setCompleteFormState = {setCompleteFormState} completeFormData={completeFormData}
-        key={selectedComponents.length} />]);
-        break;
+        <RadioButton 
+          setCompleteFormState = {setCompleteFormState} 
+          completeFormData={completeFormData}
+          key={selectedComponents.length} 
+          onRemove = {()=>handleRemoveComponent(selectedComponents.length)}
+        />]);
         
+        break;
+
+
       default:
         break;
     }
@@ -67,6 +99,12 @@ const UIPlanning = () => {
     updatedComponents.splice(index, 1);
     setSelectedComponents(updatedComponents); 
   };
+
+//passing data by navigate and location
+  const handlePreview = ()=>{
+
+    navigate('/preview',{ state: { completeFormData: completeFormData } })
+  }
   
  
 
@@ -105,6 +143,12 @@ const UIPlanning = () => {
             Radio Button
           </Button>
         </div>
+        <Button variant="contained" color="success" 
+                  onClick={handlePreview}
+                  >
+            Preview
+          </Button>
+        
       </div>
 
       <div style={{ width: '80%', padding: '20px' }}>
@@ -130,3 +174,4 @@ const UIPlanning = () => {
 };
 
 export default UIPlanning;
+
