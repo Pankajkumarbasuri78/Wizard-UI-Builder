@@ -5,6 +5,7 @@ import '../../CSS/textboxes.css';
 
 const TextBoxes = ({setCompleteFormState,completeFormData,onRemove,globalSeq,setGlobalSeq}) => {
   const [formData, setFormData] = useState({
+    type:'textbox',
     question: '',
     options: [],
     seq: globalSeq

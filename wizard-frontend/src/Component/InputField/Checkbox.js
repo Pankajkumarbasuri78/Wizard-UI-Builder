@@ -5,9 +5,10 @@ import '../../CSS/textboxes.css';
 
 const CheckboxComponent = ({setCompleteFormState,completeFormData,onRemove,globalSeq,setGlobalSeq}) => {
   const [formData, setFormData] = useState({
+    type:'checkbox',
     question: '',
     options: [],
-    checkSeq: globalSeq
+    seq: globalSeq
   });
 
   const handleQuestionChange = (e) => {
