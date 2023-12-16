@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Typography, TextField, Button, FormControl, Box, IconButton, Radio, RadioGroup, FormControlLabel } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import '../../CSS/textboxes.css';
+import { WizardContext } from '../../Context/WizardContext';
 
-const RadioButton = ({setCompleteFormState,completeFormData,onRemove}) => {
+const RadioButton = ({onRemove}) => {
+
+  //global state
+  const {completeFormDataContext,setCompleteFormDataContext,globalSeq,setGlobalSeq} = useContext(WizardContext)
 
 
   const [formData, setFormData] = useState({
+    type:'radio',
     question: '',
     options: [],
-    selectedOption: '',
+    seq: globalSeq
   });
 
   const handleQuestionChange = (e) => {
@@ -36,22 +41,25 @@ const RadioButton = ({setCompleteFormState,completeFormData,onRemove}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setGlobalSeq(globalSeq+1);
 
     onRemove();
 
     console.log('Submitted:', formData);
+
+    const textBoxUpdate = structuredClone(completeFormDataContext)
+    textBoxUpdate.radioButtons.push(formData)
+    console.log("radiocontext");
+    console.log(textBoxUpdate);
+
+    setCompleteFormDataContext(textBoxUpdate);
    
-    const radioButtonUpdate = structuredClone(completeFormData);
-
-    radioButtonUpdate.radioButtons.push(formData);
-
-    setCompleteFormState(radioButtonUpdate);
 
     
     setFormData({
       question: '',
       options: [],
-      selectedOption: '',
+
     });
 
   };

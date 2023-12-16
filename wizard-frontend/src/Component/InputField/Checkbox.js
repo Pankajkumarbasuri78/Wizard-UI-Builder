@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Typography, TextField, Button, FormControl, Box, Checkbox, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import '../../CSS/textboxes.css';
+import { WizardContext } from '../../Context/WizardContext';
 
-const CheckboxComponent = ({setCompleteFormState,completeFormData,onRemove,globalSeq,setGlobalSeq}) => {
+const CheckboxComponent = ({onRemove}) => {
+
+  //global state
+  const {completeFormDataContext,setCompleteFormDataContext,globalSeq,setGlobalSeq} = useContext(WizardContext)
+
   const [formData, setFormData] = useState({
     type:'checkbox',
     question: '',
@@ -38,12 +43,14 @@ const CheckboxComponent = ({setCompleteFormState,completeFormData,onRemove,globa
     
     console.log('Submitted:', { formData });
     setGlobalSeq(globalSeq+1);
-   
-    const checkBoxUpdate = structuredClone(completeFormData);
 
-    checkBoxUpdate.checkboxes.push(formData);
+    const textBoxUpdate = structuredClone(completeFormDataContext)
+    textBoxUpdate.checkboxes.push(formData)
+    console.log("texboxcontext");
+    console.log(textBoxUpdate);
 
-    setCompleteFormState(checkBoxUpdate);
+    setCompleteFormDataContext(textBoxUpdate);
+
     onRemove();
     setFormData({
       question: '',

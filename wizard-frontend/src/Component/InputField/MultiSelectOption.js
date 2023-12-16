@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Typography, TextField, Button, FormControl, Box, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import '../../CSS/textboxes.css';
+import { WizardContext } from '../../Context/WizardContext';
 
 const MultiSelectOption = ({setCompleteFormState,completeFormData,onRemove}) => {
+
+  //global state
+  const {completeFormDataContext,setCompleteFormDataContext,globalSeq,setGlobalSeq} = useContext(WizardContext)
+
   const [formData, setFormData] = useState({
+    type:'mcq',
     question: '',
     options: [],
+    seq: globalSeq
   });
 
   const handleQuestionChange = (e) => {
@@ -33,13 +40,18 @@ const MultiSelectOption = ({setCompleteFormState,completeFormData,onRemove}) => 
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    setGlobalSeq(globalSeq+1);
     
-    console.log('Submitted:', { formData });
-    const multiSelectUpdate = structuredClone(completeFormData);
+    console.log('mcq', { formData });
 
-    multiSelectUpdate.radioButtons.push(formData);
+    const textBoxUpdate = structuredClone(completeFormDataContext)
+    textBoxUpdate.multiSelectOptions.push(formData)
+    console.log("texboxcontext");
+    console.log(textBoxUpdate);
 
-    setCompleteFormState(multiSelectUpdate);
+    setCompleteFormDataContext(textBoxUpdate);
+
     onRemove()
     setFormData({
       question: '',

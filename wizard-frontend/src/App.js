@@ -11,9 +11,11 @@ import UIPlanning from "./Common/UIPlanning";
 // import Dropdown from "./Component/InputField/Dropdown";
 import DesignPage from "./Pages/DesignPage";
 import Preview from "./Pages/Preview";
+import { WizardContextProvider } from "./Context/WizardContext";
 const App = () => {
   return (
     <>
+    <WizardContextProvider>
       <Routes>
 
         
@@ -31,6 +33,7 @@ const App = () => {
         <Route path="/designPage" element={<DesignPage/>}/>
         <Route path="/preview" element={<Preview/>}/>
       </Routes>
+      </WizardContextProvider>
     </>
   );
 };

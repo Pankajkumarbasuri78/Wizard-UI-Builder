@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import TextBoxes from '../Component/InputField/TextBoxes';
 import CheckboxComponent from '../Component/InputField/Checkbox';
 import Dropdown from '../Component/InputField/Dropdown';
@@ -6,19 +6,24 @@ import MultiSelectOption from '../Component/InputField/MultiSelectOption';
 import RadioButton from '../Component/InputField/RadioButton';
 import Button from '@mui/material/Button';
 import '../CSS/UIPlanning.css';
-import {  useLocation,useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
+
+import {WizardContext} from "../Context/WizardContext"
+import TextArea from '../Component/InputField/TextAreas';
 
 const UIPlanning = () => {
 
   const navigate = useNavigate();
 
-  const location = useLocation();
-  const formDataFromLocation = location.state.formData;
+  const {wizardData} = useContext(WizardContext)
+  console.log("context se hai");
+  console.log(wizardData);
 
-  const [globalSeq,setGlobalSeq] = useState(1);
-  
+  const {completeFormDataContext} = useContext(WizardContext);
 
-  //const totalStep = formData.totalSteps;
+  console.log("from context");
+  console.log(completeFormDataContext);
+
   
   const [completeFormData, setCompleteFormState] = useState({
     textBoxes: [],
@@ -36,24 +41,16 @@ const UIPlanning = () => {
       case 'TextBoxes':
         setSelectedComponents([...selectedComponents, 
         <TextBoxes 
-          setCompleteFormState = {setCompleteFormState} 
-          completeFormData={completeFormData} 
           key={selectedComponents.length} 
           onRemove = {()=>handleRemoveComponent(selectedComponents.length)}
-          globalSeq={globalSeq}
-          setGlobalSeq={setGlobalSeq}
           />]);
         break;
 
       case 'CheckboxComponent':
         setSelectedComponents([...selectedComponents, 
         <CheckboxComponent 
-           setCompleteFormState = {setCompleteFormState} 
-           completeFormData={completeFormData}
            key={selectedComponents.length} 
            onRemove = {()=>handleRemoveComponent(selectedComponents.length)}
-           globalSeq={globalSeq}
-           setGlobalSeq={setGlobalSeq}
            />]);
         break;
 
@@ -70,8 +67,6 @@ const UIPlanning = () => {
       case 'MultiSelectOptionComponent':
         setSelectedComponents([...selectedComponents, 
         <MultiSelectOption 
-           setCompleteFormState = {setCompleteFormState} 
-           completeFormData={completeFormData}
            key={selectedComponents.length} 
            onRemove = {()=>handleRemoveComponent(selectedComponents.length)}
           />]);
@@ -80,13 +75,21 @@ const UIPlanning = () => {
       case 'RadioButtonComponent':
         setSelectedComponents([...selectedComponents, 
         <RadioButton 
-          setCompleteFormState = {setCompleteFormState} 
-          completeFormData={completeFormData}
           key={selectedComponents.length} 
           onRemove = {()=>handleRemoveComponent(selectedComponents.length)}
+          
         />]);
         
         break;
+      case 'TextAreaButtonComponent':
+        setSelectedComponents([...selectedComponents, 
+        <TextArea 
+          key={selectedComponents.length} 
+          onRemove = {()=>handleRemoveComponent(selectedComponents.length)}
+          
+        />]);
+        
+      break;
 
 
       default:
@@ -103,12 +106,13 @@ const UIPlanning = () => {
 //passing data by navigate and location
   const handlePreview = ()=>{
 
-    navigate('/preview',{ state: { completeFormData: completeFormData } })
+    //navigate('/preview',{ state: { completeFormData: completeFormData } })
+    navigate('/preview');
   }
   
  
 
-  console.log('Form State:', completeFormData);
+  console.log('Form State:', completeFormDataContext);
 
   return (
     <>
@@ -142,6 +146,12 @@ const UIPlanning = () => {
                   >
             Radio Button
           </Button>
+
+          <Button variant="contained" color="success" 
+                  onClick={() => handleOptionClick('TextAreaButtonComponent')}
+                  >
+            Text Area
+          </Button>
         </div>
         <Button variant="contained" color="success" 
                   onClick={handlePreview}
@@ -152,7 +162,7 @@ const UIPlanning = () => {
       </div>
 
       <div className='renderedContainer'>
-         <h1 style={{display:'flex',justifyContent:'center',marginBottom:'30px'}}>{formDataFromLocation.title}</h1>
+         <h1 style={{display:'flex',justifyContent:'center',marginBottom:'30px'}}>{wizardData.title}</h1>
         {selectedComponents.map((Component, index) => (
           <div key={index} style={{ marginBottom: '20px', position: 'relative' }}>
             {Component}

@@ -1,41 +1,35 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Navbar from "../Common/Navbar";
 import Typography from '@mui/material/Typography';
 import { useNavigate } from "react-router-dom";
+import {WizardContext} from "../Context/WizardContext"
 
 const WizardCreation = () => {
 
-  const navigate = useNavigate();
+  const { wizardData, setWizardData } = useContext(WizardContext)
 
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    totalSteps: "",
-  });
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     //const { name, value } = e.target;
     
-    setFormData({ ...formData, [name]: value });
+    setWizardData({ ...wizardData, [name]: value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    console.log(formData);
+    console.log(wizardData);
 
-    setFormData({
-        title: "",
-        description: "",
-        totalSteps: "",
-      });
+    setWizardData(wizardData);
 
-      navigate('/ui',{ state: { formData } })
+      //navigate('/ui',{ state: { formData } })
+      navigate('/ui')
   };
 
   const handleNextClick = () => {
@@ -43,7 +37,6 @@ const WizardCreation = () => {
     
   };
 
-  
 
   return (
     <>
@@ -57,7 +50,7 @@ const WizardCreation = () => {
             fullWidth
             label="Give Title of WizardForm"
             name="title"
-            value={formData.title}
+            value={wizardData.title}
             onChange={handleInputChange}
             margin="normal"
             required
@@ -66,7 +59,7 @@ const WizardCreation = () => {
             fullWidth
             label="Give Description of WizardForm"
             name="description"
-            value={formData.description}
+            value={wizardData.description}
             onChange={handleInputChange}
             margin="normal"
             multiline
@@ -77,7 +70,7 @@ const WizardCreation = () => {
             fullWidth
             label="Total Steps"
             name="totalSteps"
-            value={formData.totalSteps}
+            value={wizardData.totalSteps}
             onChange={handleInputChange}
             margin="normal"
             type="number"

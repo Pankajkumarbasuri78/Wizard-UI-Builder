@@ -1,13 +1,18 @@
-
-import React, { useState } from 'react';
-import { Typography, TextField, Button, FormControl, Box, IconButton, MenuItem, Select } from '@mui/material';
+import React, { useState, useContext } from 'react';
+import { Typography, TextField, Button, Box, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import '../../CSS/textboxes.css';
+import { WizardContext } from '../../Context/WizardContext';
 
-const Dropdown = ({setCompleteFormState,completeFormData,onRemove}) => {
+const Dropdown = ({ onRemove }) => {
+  // Global state
+  const { completeFormDataContext, setCompleteFormDataContext, globalSeq, setGlobalSeq } = useContext(WizardContext);
+
+  // Local state
   const [formData, setFormData] = useState({
+    type: 'dropdown',
     question: '',
     options: [],
+    seq: globalSeq,
   });
 
   const handleQuestionChange = (e) => {
@@ -34,16 +39,18 @@ const Dropdown = ({setCompleteFormState,completeFormData,onRemove}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    console.log('Submitted:', { formData });
 
-    const dropdownUpdate = structuredClone(completeFormData);
+    setGlobalSeq(globalSeq + 1);
 
-    dropdownUpdate.radioButtons.push(formData);
+    console.log('From Dropdown comp. :', formData);
 
-    setCompleteFormState(dropdownUpdate);
+    // Clone and update context data
+    const dropdownUpdate = { ...completeFormDataContext };
+    dropdownUpdate.dropdowns.push(formData);
 
+    setCompleteFormDataContext(dropdownUpdate);
     onRemove();
+
     setFormData({
       question: '',
       options: [],
@@ -53,10 +60,10 @@ const Dropdown = ({setCompleteFormState,completeFormData,onRemove}) => {
   return (
     <Box sx={{ maxWidth: 600, margin: 'auto', padding: '20px', backgroundColor: '#F3F5F0', borderRadius: '8px', boxShadow: '0px 3px 6px #00000029' }}>
       <Typography variant="h5" gutterBottom>
-        Create Your Dropdown Component
+        Create Your Dropdown Wizard
       </Typography>
       <form onSubmit={handleSubmit}>
-        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: '70px', gap: '10px' }}>
+        <div style={{display:'flex',flexDirection:'column'}}>
           <TextField
             label="Question"
             fullWidth
@@ -66,22 +73,19 @@ const Dropdown = ({setCompleteFormState,completeFormData,onRemove}) => {
             variant="outlined"
             sx={{ mb: 2 }}
           />
-          <Button variant="contained" color="primary" type="submit" sx={{ display: 'flex', height: '53px' }}>
-            Submit
-          </Button>
-        </div>
-
-        <FormControl component="fieldset" sx={{ mb: 4, mt: 2 }}>
+          <Typography variant="body2" sx={{ mb: 1 }}>
+            Options (up to 4):
+          </Typography>
           {formData.options.map((option, index) => (
-            <div key={index} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom: '8px', backgroundColor: '#ffffff', boxShadow: '0px 3px 6px #00000029', borderRadius: '8px', padding: '8px' }}>
-              <Select
+            <div key={index}>
+              <TextField
+                label={`Option ${index + 1}`}
                 value={option}
                 onChange={(e) => handleOptionChange(index, e.target.value)}
+                fullWidth
                 variant="outlined"
                 sx={{ flex: 1, mr: 1 }}
-              >
-                <MenuItem value={option}>{option}</MenuItem>
-              </Select>
+              />
               <IconButton onClick={() => removeOption(index)}>
                 <DeleteIcon />
               </IconButton>
@@ -95,7 +99,10 @@ const Dropdown = ({setCompleteFormState,completeFormData,onRemove}) => {
           >
             Add Option
           </Button>
-        </FormControl>
+          <Button variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
+            Submit
+          </Button>
+        </div>
       </form>
     </Box>
   );

@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Typography, TextField, Button, FormControl, Box, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import '../../CSS/textboxes.css';
+import { WizardContext } from '../../Context/WizardContext';
 
-const TextBoxes = ({setCompleteFormState,completeFormData,onRemove,globalSeq,setGlobalSeq}) => {
+const TextBoxes = ({onRemove}) => {
+
+  //global state
+  const {completeFormDataContext,setCompleteFormDataContext,globalSeq,setGlobalSeq} = useContext(WizardContext)
+
+
+  //local state
   const [formData, setFormData] = useState({
     type:'textbox',
     question: '',
@@ -38,13 +45,22 @@ const TextBoxes = ({setCompleteFormState,completeFormData,onRemove,globalSeq,set
 
     setGlobalSeq(globalSeq+1);
 
-    console.log('Submitted:', formData);
+    console.log('From TextBox comp. :', formData);
+
+    //structured clone
+
+    const textBoxUpdate = structuredClone(completeFormDataContext)
+    textBoxUpdate.textBoxes.push(formData)
+    console.log("texboxcontext");
+    console.log(textBoxUpdate);
+
+    setCompleteFormDataContext(textBoxUpdate);
     
-    const textBoxUpdate = structuredClone(completeFormData);
+    // const textBoxUpdate = structuredClone(completeFormData);
 
-    textBoxUpdate.textBoxes.push(formData);
+    // textBoxUpdate.textBoxes.push(formData);
 
-    setCompleteFormState(textBoxUpdate);
+    // setCompleteFormState(textBoxUpdate);
     onRemove();
 
     
@@ -61,7 +77,7 @@ const TextBoxes = ({setCompleteFormState,completeFormData,onRemove,globalSeq,set
         Create Your Textbox Wizard
       </Typography>
       <form onSubmit={handleSubmit}>
-        <div className='textContainer'>
+        <div style={{display:'flex',flexDirection:'column'}}>
           <TextField
             label="Question"
             fullWidth
@@ -71,12 +87,7 @@ const TextBoxes = ({setCompleteFormState,completeFormData,onRemove,globalSeq,set
             variant="outlined"
             sx={{ mb: 2 }}
           />
-          <Button variant="contained" color="primary" type="submit" sx={{ display: 'flex', height: '53px'}}>
-            Submit
-          </Button>
-        </div>
-
-        <FormControl component="fieldset" sx={{ mb: 4, mt: 2 }}>
+          
           {formData.options.map((option, index) => (
             <div key={index} className='optionStyle'>
               <TextField
@@ -100,7 +111,10 @@ const TextBoxes = ({setCompleteFormState,completeFormData,onRemove,globalSeq,set
           >
             Add Option
           </Button>
-        </FormControl>
+          <Button variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
+            Submit
+          </Button>
+          </div>
       </form>
     </Box>
   );
