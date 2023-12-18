@@ -16,6 +16,9 @@ const UIPlanning = () => {
   const navigate = useNavigate();
 
   const {wizardData} = useContext(WizardContext)
+  const [currentCount,setCurrentCount] = useState(1);
+
+
   console.log("context se hai");
   console.log(wizardData);
 
@@ -110,15 +113,25 @@ const UIPlanning = () => {
     navigate('/preview');
   }
   
- 
-
   console.log('Form State:', completeFormDataContext);
+
+  const handleNextPage = () =>{
+
+    if(currentCount == wizardData.totalSteps){
+      alert("over")
+    }else{
+      setCurrentCount(currentCount+1)
+    }
+    
+  }
+
 
   return (
     <>
       <div style={{ display: 'flex' }}>
         
       <div className='uiContainer' style={{ position: 'sticky', top: 0 }}>
+        <h4>Step {currentCount}</h4>
         <h2>Select a Form Element</h2>
         <div className='UiWrapper'>
           <Button variant="contained" color="success" 
@@ -158,6 +171,7 @@ const UIPlanning = () => {
                   >
             Preview
           </Button>
+          <button onClick={handleNextPage}>Next</button>
         
       </div>
 
