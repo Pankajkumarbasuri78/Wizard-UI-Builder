@@ -12,112 +12,116 @@ const Preview = () => {
   const {completeFormDataContext} = useContext(WizardContext)
 
 
-  const renderComponentsBySeq = () => {
-    const componentsBySeq = [
-      ...completeFormDataContext.textBoxes,
-      ...completeFormDataContext.radioButtons,
-      ...completeFormDataContext.checkboxes,
-      ...completeFormDataContext.multiSelectOptions,
-      ...completeFormDataContext.textArea
+  // const renderComponentsBySeq = () => {
+  //   const componentsBySeq = [
+  //     ...completeFormDataContext.textBoxes,
+  //     ...completeFormDataContext.radioButtons,
+  //     ...completeFormDataContext.checkboxes,
+  //     ...completeFormDataContext.multiSelectOptions,
+  //     ...completeFormDataContext.textArea
       
-    ];
-    console.log(componentsBySeq)
-    //sort by seq
-    const sortedFormData = componentsBySeq.sort((a, b) => a.seq - b.seq);
-    console.log(sortedFormData);
-    //return "heelo";
-    return sortedFormData.map((data,index)=>{
-        switch (data.type) {
-            case "textbox":
-                return (
+  //   ];
+  //   console.log(componentsBySeq)
+  //   //sort by seq
+  //   const sortedFormData = componentsBySeq.sort((a, b) => a.seq - b.seq);
+  //   console.log(sortedFormData);
+  //   //return "heelo";
+  //   return sortedFormData.map((data,index)=>{
+  //       switch (data.type) {
+  //           case "textbox":
+  //               return (
                     
-                    <Card key={index} style={{ margin: '10px', borderRadius: '8px',width:'50%',backgroundColor:'#d6d4ce' }}>
-                      <CardContent>
-                        <Typography variant="h5">Text Box Question:</Typography>
-                        <Typography variant="body1">{data.question}</Typography>
-                        <Typography variant="subtitle1">Options:</Typography>
-                        <List>
-                          {data.options.map((option, optionIndex) => (
-                            <ListItem key={optionIndex}>{option}</ListItem>
-                          ))}
-                        </List>
-                      </CardContent>
-                    </Card>
+  //                   <Card key={index} style={{ margin: '10px', borderRadius: '8px',width:'50%',backgroundColor:'#d6d4ce' }}>
+  //                     <CardContent>
+  //                       <Typography variant="h5">Text Box Question:</Typography>
+  //                       <Typography variant="body1">{data.question}</Typography>
+  //                       <Typography variant="subtitle1">Options:</Typography>
+  //                       <List>
+  //                         {data.options.map((option, optionIndex) => (
+  //                           <ListItem key={optionIndex}>{option}</ListItem>
+  //                         ))}
+  //                       </List>
+  //                     </CardContent>
+  //                   </Card>
                    
-                  );
+  //                 );
                 
-            case "checkbox":
-                return (
-                    <Card key={index} style={{ margin: '10px', borderRadius: '8px',width:'50%',backgroundColor:'#d6d4ce' }}>
-                      <CardContent>
-                        <Typography variant="h5">Check Box Question:</Typography>
-                        <Typography variant="body1">{data.question}</Typography>
-                        <Typography variant="subtitle1">Options:</Typography>
-                        <List>
-                          {data.options.map((option, optionIndex) => (
-                            <ListItem key={optionIndex}>{option}</ListItem>
-                          ))}
-                        </List>
-                      </CardContent>
-                    </Card>
-                );
+  //           case "checkbox":
+  //               return (
+  //                   <Card key={index} style={{ margin: '10px', borderRadius: '8px',width:'50%',backgroundColor:'#d6d4ce' }}>
+  //                     <CardContent>
+  //                       <Typography variant="h5">Check Box Question:</Typography>
+  //                       <Typography variant="body1">{data.question}</Typography>
+  //                       <Typography variant="subtitle1">Options:</Typography>
+  //                       <List>
+  //                         {data.options.map((option, optionIndex) => (
+  //                           <ListItem key={optionIndex}>{option}</ListItem>
+  //                         ))}
+  //                       </List>
+  //                     </CardContent>
+  //                   </Card>
+  //               );
 
-            case "mcq":
-              return(
-                <Card key={index} style={{ margin: '10px', borderRadius: '8px',width:'50%',backgroundColor:'#d6d4ce' }}>
-                      <CardContent>
-                        <Typography variant="h5">Check Box Question:</Typography>
-                        <Typography variant="body1">{data.question}</Typography>
-                        <Typography variant="subtitle1">Options:</Typography>
-                        <List>
-                          {data.options.map((option, optionIndex) => (
-                            <ListItem key={optionIndex}>{option}</ListItem>
-                          ))}
-                        </List>
-                      </CardContent>
-                    </Card>
-              )
+  //           case "mcq":
+  //             return(
+  //               <Card key={index} style={{ margin: '10px', borderRadius: '8px',width:'50%',backgroundColor:'#d6d4ce' }}>
+  //                     <CardContent>
+  //                       <Typography variant="h5">Check Box Question:</Typography>
+  //                       <Typography variant="body1">{data.question}</Typography>
+  //                       <Typography variant="subtitle1">Options:</Typography>
+  //                       <List>
+  //                         {data.options.map((option, optionIndex) => (
+  //                           <ListItem key={optionIndex}>{option}</ListItem>
+  //                         ))}
+  //                       </List>
+  //                     </CardContent>
+  //                   </Card>
+  //             )
 
-            case "radio":
-              return(
-                <Card key={index} style={{ margin: '10px', borderRadius: '8px',width:'50%',backgroundColor:'#d6d4ce' }}>
-                      <CardContent>
-                        <Typography variant="h5">Check Box Question:</Typography>
-                        <Typography variant="body1">{data.question}</Typography>
-                        <Typography variant="subtitle1">Options:</Typography>
-                        <List>
-                          {data.options.map((option, optionIndex) => (
-                            <ListItem key={optionIndex}>{option}</ListItem>
-                          ))}
-                        </List>
-                      </CardContent>
-                    </Card>
-              )
+  //           case "radio":
+  //             return(
+  //               <Card key={index} style={{ margin: '10px', borderRadius: '8px',width:'50%',backgroundColor:'#d6d4ce' }}>
+  //                     <CardContent>
+  //                       <Typography variant="h5">Check Box Question:</Typography>
+  //                       <Typography variant="body1">{data.question}</Typography>
+  //                       <Typography variant="subtitle1">Options:</Typography>
+  //                       <List>
+  //                         {data.options.map((option, optionIndex) => (
+  //                           <ListItem key={optionIndex}>{option}</ListItem>
+  //                         ))}
+  //                       </List>
+  //                     </CardContent>
+  //                   </Card>
+  //             )
 
-            case "textarea":
-              return(
-                <Card key={index} style={{ margin: '10px', borderRadius: '8px',width:'50%',backgroundColor:'#d6d4ce' }}>
-                      <CardContent>
-                        <Typography variant="h5">Check Box Question:</Typography>
-                        <Typography variant="body1">{data.question}</Typography>
-                        <Typography variant="subtitle1">Description:</Typography>
-                        <List>
-                          {data.textDescription}
-                        </List>
-                      </CardContent>
-                    </Card>
-              )
+  //           case "textarea":
+  //             return(
+  //               <Card key={index} style={{ margin: '10px', borderRadius: '8px',width:'50%',backgroundColor:'#d6d4ce' }}>
+  //                     <CardContent>
+  //                       <Typography variant="h5">Check Box Question:</Typography>
+  //                       <Typography variant="body1">{data.question}</Typography>
+  //                       <Typography variant="subtitle1">Description:</Typography>
+  //                       <List>
+  //                         {data.textDescription}
+  //                       </List>
+  //                     </CardContent>
+  //                   </Card>
+  //             )
         
-            default:
-                break;
-        }
+  //           default:
+  //               break;
+  //       }
 
-    })
-    // return componentsBySeq
-    //   .sort((a, b) => a.seq - b.seq) 
-    //   .map((component) => renderComponent(component));
+  //   })
+  //   // return componentsBySeq
+  //   //   .sort((a, b) => a.seq - b.seq) 
+  //   //   .map((component) => renderComponent(component));
 
-  };
+  // };
+
+  const renderComponentsBySeq = ()=>{
+    const componentsBySeq = [...completeFormDataContext];
+  }
 
   const handleBack = () => {
 
@@ -138,6 +142,11 @@ const Preview = () => {
 };
 
 export default Preview;
+
+
+
+
+
 
 
 

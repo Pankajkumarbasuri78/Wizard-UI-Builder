@@ -1,19 +1,20 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Typography, TextField, Button, FormControl, Box, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import '../../CSS/textboxes.css';
 import { WizardContext } from '../../Context/WizardContext';
 
-const MultiSelectOption = ({setCompleteFormState,completeFormData,onRemove}) => {
+const MultiSelectOption = (props) => {
 
   //global state
-  const {completeFormDataContext,setCompleteFormDataContext,globalSeq,setGlobalSeq} = useContext(WizardContext)
+  const {completeFormDataContext,setCompleteFormDataContext,globalSeq,setGlobalSeq,currentCount} = useContext(WizardContext)
 
   const [formData, setFormData] = useState({
+    page:currentCount,
     type:'mcq',
-    question: '',
-    options: [],
-    seq: globalSeq
+    question: Object.keys(props).includes('question')?props.question:'',
+    options: Object.keys(props).includes('options')?props.options:[],
+    Uid: props.uniqueId
   });
 
   const handleQuestionChange = (e) => {
@@ -38,33 +39,40 @@ const MultiSelectOption = ({setCompleteFormState,completeFormData,onRemove}) => 
     setFormData({ ...formData, options: updatedOptions });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
 
-    setGlobalSeq(globalSeq+1);
+  //   setGlobalSeq(globalSeq+1);
     
-    console.log('mcq', { formData });
+  //   console.log('mcq', { formData });
 
-    const textBoxUpdate = structuredClone(completeFormDataContext)
-    textBoxUpdate.multiSelectOptions.push(formData)
-    console.log("texboxcontext");
-    console.log(textBoxUpdate);
+  //   const textBoxUpdate = structuredClone(completeFormDataContext)
+  //   textBoxUpdate.multiSelectOptions.push(formData)
+  //   console.log("texboxcontext");
+  //   console.log(textBoxUpdate);
 
-    setCompleteFormDataContext(textBoxUpdate);
+  //   setCompleteFormDataContext(textBoxUpdate);
 
-    onRemove()
-    setFormData({
-      question: '',
-      options: [],
-    });
-  };
+  //   onRemove()
+  //   setFormData({
+  //     question: '',
+  //     options: [],
+  //   });
+  // };
+
+  useEffect(()=>{
+    setCompleteFormDataContext((prevContext)=>({...prevContext,[formData.page]:{
+      ...prevContext[formData.page],[formData.Uid]:formData
+    }}))
+    console.log(completeFormDataContext);
+  },[formData])
 
   return (
     <Box sx={{ maxWidth: 600, margin: 'auto', padding: '20px', backgroundColor: '#F3F5F0', borderRadius: '8px', boxShadow: '0px 3px 6px #00000029' }}>
       <Typography variant="h5" gutterBottom>
         Create Your Multi-Select Option
       </Typography>
-      <form onSubmit={handleSubmit}>
+      <form>
         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: '70px', gap: '10px' }}>
           <TextField
             label="Question"

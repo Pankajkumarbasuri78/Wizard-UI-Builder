@@ -1,20 +1,21 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Typography, TextField, Button, FormControl, Box, IconButton, Radio, RadioGroup, FormControlLabel } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import '../../CSS/textboxes.css';
 import { WizardContext } from '../../Context/WizardContext';
 
-const RadioButton = ({onRemove}) => {
+const RadioButton = (props) => {
 
   //global state
-  const {completeFormDataContext,setCompleteFormDataContext,globalSeq,setGlobalSeq} = useContext(WizardContext)
+  const {completeFormDataContext,setCompleteFormDataContext,globalSeq,setGlobalSeq,currentCount} = useContext(WizardContext)
 
 
   const [formData, setFormData] = useState({
+    page:currentCount,
     type:'radio',
-    question: '',
-    options: [],
-    seq: globalSeq
+    question: Object.keys(props).includes('question')?props.question:'',
+    options: Object.keys(props).includes('options')?props.options:[],
+    Uid: props.uniqueId
   });
 
   const handleQuestionChange = (e) => {
@@ -39,37 +40,48 @@ const RadioButton = ({onRemove}) => {
     setFormData({ ...formData, options: updatedOptions });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setGlobalSeq(globalSeq+1);
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   setGlobalSeq(globalSeq+1);
 
-    onRemove();
+  //   onRemove();
 
-    console.log('Submitted:', formData);
+  //   console.log('Submitted:', formData);
 
-    const textBoxUpdate = structuredClone(completeFormDataContext)
-    textBoxUpdate.radioButtons.push(formData)
-    console.log("radiocontext");
-    console.log(textBoxUpdate);
+  //   const textBoxUpdate = structuredClone(completeFormDataContext)
+  //   textBoxUpdate.radioButtons.push(formData)
+  //   console.log("radiocontext");
+  //   console.log(textBoxUpdate);
 
-    setCompleteFormDataContext(textBoxUpdate);
+  //   setCompleteFormDataContext(textBoxUpdate);
    
 
     
-    setFormData({
-      question: '',
-      options: [],
+  //   setFormData({
+  //     question: '',
+  //     options: [],
 
-    });
+  //   });
 
-  };
+  // };
+
+  useEffect(()=>{
+    console.log("ssssss");
+    console.log(formData);
+    setCompleteFormDataContext((prevContext)=>({...prevContext,[formData.page]:{
+      ...prevContext[formData.page],[formData.Uid]:formData
+    }}))
+    console.log(completeFormDataContext);
+    console.log(formData);
+  },[formData])
+
 
   return (
     <Box sx={{ maxWidth: 600, margin: 'auto', padding: '20px', backgroundColor: '#F3F5F0', borderRadius: '8px', boxShadow: '0px 3px 6px #00000029' }}>
       <Typography variant="h5" gutterBottom>
         Create Your RadioButton Component
       </Typography>
-      <form onSubmit={handleSubmit}>
+      <form>
         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: '70px', gap: '10px' }}>
           <TextField
             label="Question"
@@ -80,9 +92,9 @@ const RadioButton = ({onRemove}) => {
             variant="outlined"
             sx={{ mb: 2 }}
           />
-          <Button variant="contained" color="primary" type="submit" sx={{ display: 'flex', height: '53px' }}>
+          {/* <Button variant="contained" color="primary" type="submit" sx={{ display: 'flex', height: '53px' }}>
             Submit
-          </Button>
+          </Button> */}
         </div>
 
         <FormControl component="fieldset" sx={{ mb: 4, mt: 2 }}>

@@ -1,17 +1,22 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Typography, TextField, Button, Box } from '@mui/material';
 import { WizardContext } from '../../Context/WizardContext';
 
-const TextArea = ({ onRemove }) => {
-  // Global state
-  const { completeFormDataContext, setCompleteFormDataContext, globalSeq, setGlobalSeq } = useContext(WizardContext);
+const TextArea = (props) => {
+  // Global state,
+  const { completeFormDataContext, setCompleteFormDataContext,currentCount} = useContext(WizardContext);
 
   // Local state
   const [formData, setFormData] = useState({
-    type: 'textarea',
-    question: '',
-    textDescription: '',
-    seq: globalSeq,
+    page:currentCount,
+    type:'textarea',
+    question: Object.keys(props).includes('question')?props.question:'',
+    textDescription: Object.keys(props).includes('textDescription')?props.textDescription:'',
+    //options: Object.keys(props).includes('options')?props.options:[],
+    Uid: props.uniqueId,
+    
+    
+    
   });
 
   const handleQuestionChange = (e) => {
@@ -22,31 +27,41 @@ const TextArea = ({ onRemove }) => {
     setFormData({ ...formData, textDescription: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setGlobalSeq(globalSeq + 1);
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   setGlobalSeq(globalSeq + 1);
 
-    console.log('From TextArea comp. :', formData);
+  //   console.log('From TextArea comp. :', formData);
 
-    // Clone and update context data
-    const textAreaUpdate = { ...completeFormDataContext };
-    textAreaUpdate.textArea.push(formData);
+  //   // Clone and update context data
+  //   const textAreaUpdate = { ...completeFormDataContext };
+  //   textAreaUpdate.textArea.push(formData);
 
-    setCompleteFormDataContext(textAreaUpdate);
-    onRemove();
+  //   setCompleteFormDataContext(textAreaUpdate);
+  //   onRemove();
 
-    setFormData({
-      question: '',
-      textDescription: '',
-    });
-  };
+  //   setFormData({
+  //     question: '',
+  //     textDescription: '',
+  //   });
+  // };
+
+  useEffect(()=>{
+    console.log("ssssss");
+    console.log(formData);
+    setCompleteFormDataContext((prevContext)=>({...prevContext,[formData.page]:{
+      ...prevContext[formData.page],[formData.Uid]:formData
+    }}))
+    console.log(completeFormDataContext);
+    console.log(formData);
+  },[formData])
 
   return (
     <Box sx={{ maxWidth: 600, margin: 'auto', padding: '20px', backgroundColor: '#F3F5F0', borderRadius: '8px', boxShadow: '0px 3px 6px #00000029' }}>
       <Typography variant="h5" gutterBottom>
         Create Your TextArea Wizard
       </Typography>
-      <form onSubmit={handleSubmit}>
+      <form>
         <div style={{display:'flex',flexDirection:'column'}}>
           <TextField
             label="Question"
