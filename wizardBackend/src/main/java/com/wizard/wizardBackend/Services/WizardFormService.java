@@ -1,25 +1,25 @@
-package com.wizard.wizardBackend.Services;
+// package com.wizard.wizardBackend.Services;
 
-import java.util.List;
+// import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.stereotype.Service;
 
-import com.wizard.wizardBackend.Modal.WizardForm;
-import com.wizard.wizardBackend.Repo.WizardFormRepo;
+// import com.wizard.wizardBackend.Modal.WizardForm;
+// import com.wizard.wizardBackend.Repo.WizardFormRepo;
 
-@Service
-public class WizardFormService {
+// @Service
+// public class WizardFormService {
 
-    @Autowired
-    private WizardFormRepo wizardFormRepo;
+//     @Autowired
+//     private WizardFormRepo wizardFormRepo;
 
 
-    public List<WizardForm> addQ(List<WizardForm> data) {
-        List<WizardForm> list = wizardFormRepo.saveAll(data);
-        System.out.println("in wizardfrom");
-        System.out.println(list);
-        return list;
-    }
+//     public List<WizardForm> addQ(List<WizardForm> data) {
+//         List<WizardForm> list = wizardFormRepo.saveAll(data);
+//         System.out.println("in wizardfrom");
+//         System.out.println(list);
+//         return list;
+//     }
 
-}
+// }

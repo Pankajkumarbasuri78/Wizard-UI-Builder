@@ -1,6 +1,5 @@
 package com.wizard.wizardBackend.Modal;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,16 +15,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class WizardForm {
-
+public class FieldPage {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name;
-    private String desc1; 
-    private int totalSteps;
+    private int id;
+    private String page;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Question question;
-    
+    @OneToOne
+    private Template template;
 }

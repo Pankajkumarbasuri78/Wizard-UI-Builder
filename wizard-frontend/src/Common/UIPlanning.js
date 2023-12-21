@@ -29,7 +29,7 @@ const UIPlanning = () => {
   //console.log("context se hai");
   //console.log(wizardData);
 
-  const { completeFormDataContext } = useContext(WizardContext);
+  const { completeFormDataContext, } = useContext(WizardContext);
 
   console.log("from context");
   console.log(completeFormDataContext);
@@ -124,6 +124,11 @@ const UIPlanning = () => {
     const updatedComponents = [...selectedComponents];
     updatedComponents.splice(index, 1);
     setSelectedComponents(updatedComponents);
+
+    // const RemainingData = Object.entries(completeFormDataContext);
+    // console.log(RemainingData);
+
+    
   };
   const handleRemoveAllComponent = () => {
     if (selectedComponents.length > 0) {
@@ -145,6 +150,7 @@ const UIPlanning = () => {
 
   const handleNextPage = () => {
     if (currentCount == wizardData.totalSteps) {
+
       alert("over");
     } else {
       setPage(page + 1);
@@ -168,12 +174,20 @@ const UIPlanning = () => {
     //Api caal
     //setSubmitAll(submitAll => submitAll+1);
     //console.log(submitAll);
-    // handleRemoveAllComponent()
+    handleRemoveAllComponent()
   };
 
   // useEffect(()=>{
   //   console.log(selectedComponents);
   // },[selectedComponents])
+
+
+  useEffect(()=>{
+    const RemainingData = Object.entries(completeFormDataContext).slice(currentCount,1)
+    console.log("left data",RemainingData);
+console.log("typeof remaiinshdjsguav",typeof(RemainingData));
+     
+  })
 
   useEffect(() => {
     if (
@@ -258,6 +272,13 @@ const UIPlanning = () => {
     }
   }, [currentCount]);
 
+  const handleFinalSubmit = ()=>{
+   
+   const combinedObject = {...wizardData,finalData:completeFormDataContext};
+   console.log("final data for backend");
+   console.log(combinedObject);
+  }
+
   return (
     <>
       <div style={{ display: "flex" }}>
@@ -309,12 +330,20 @@ const UIPlanning = () => {
               Text Area
             </Button>
           </div>
-          <Button variant="contained" color="success" onClick={handlePreview}>
+          <Button variant="contained" color="success"  onClick={handleNextPage}>
+          Next
+          </Button>
+          <Button variant="contained" color="success" onClick={handlePrevPage}>
+          Prev
+          </Button>
+          <Button variant="contained" color="success" onClick={handlePreview} disabled={currentCount < wizardData.totalSteps}>
             Preview
           </Button>
-          <button onClick={handleNextPage}>Next</button>
 
-          <button onClick={handlePrevPage}>Prev</button>
+          <Button variant="contained" color="success" disabled={currentCount < wizardData.totalSteps} onClick={handleFinalSubmit}>
+            Final Submit
+          </Button>
+          
 
           <Button variant="contained" color="success" onClick={handleSubmitAll}>
             Submit
