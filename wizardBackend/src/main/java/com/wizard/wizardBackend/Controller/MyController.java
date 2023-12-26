@@ -37,10 +37,11 @@ public class MyController {
     }
     
     @PostMapping("/saveData")
-    public ResponseEntity<String> saveData(@RequestBody String jsonData)
+    public ResponseEntity<?> saveData(@RequestBody String jsonData)
     {
 
-        String json = wizardDataService.saveData(jsonData);
+        WizardData json = wizardDataService.saveData(jsonData);
+        //System.out.println(json);
 
         return new ResponseEntity<>(json, HttpStatus.OK);
     }

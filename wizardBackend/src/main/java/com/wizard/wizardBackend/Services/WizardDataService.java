@@ -15,11 +15,12 @@ public class WizardDataService {
     @Autowired
     private WizardDataRepo wizardDataRepo;
 
-    public String saveData(String jsonData) {
+    public WizardData saveData(String jsonData) {
         WizardData wizardData = new WizardData();
         wizardData.setJsonData(jsonData);
-        wizardDataRepo.save(wizardData);
-        return jsonData;
+        WizardData res =wizardDataRepo.save(wizardData);
+        System.out.println(res.getId());
+        return res;
     }
 
     public Optional<WizardData> getData(Long id) {
