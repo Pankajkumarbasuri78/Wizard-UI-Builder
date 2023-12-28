@@ -35,10 +35,16 @@ public class WizardDataService {
     
 
     public WizardData saveDataWithAnswer(String jsonData, long id) {
-        wizardDataRepo.deleteById(id);
-        WizardData wizardData = new WizardData();
-        wizardData.setJsonData(jsonData);
-        WizardData res =wizardDataRepo.save(wizardData);
+        // wizardDataRepo.deleteById(id);
+        // WizardData wizardData = new WizardData();
+        // wizardData.setJsonData(jsonData);
+        // WizardData res =wizardDataRepo.save(wizardData);
+        WizardData newWizardData= WizardData.builder()
+            .id(id)
+            .jsonData(jsonData)
+            .build();
+        
+        WizardData res= wizardDataRepo.save(newWizardData);
         return res;
     }
     
