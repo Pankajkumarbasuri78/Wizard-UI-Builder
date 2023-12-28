@@ -46,6 +46,16 @@ public class MyController {
         return new ResponseEntity<>(json, HttpStatus.OK);
     }
 
+    @PostMapping("/saveData/{id}")
+    public ResponseEntity<?> saveDataWithAnswer(@RequestBody String jsonData,@PathVariable long id)
+    {
+
+        WizardData json = wizardDataService.saveDataWithAnswer(jsonData,id);
+        System.out.println(json.getJsonData());
+
+        return new ResponseEntity<>(json, HttpStatus.OK);
+    }
+
     @GetMapping("/getData")
     public List<WizardData> getAllData()
     {

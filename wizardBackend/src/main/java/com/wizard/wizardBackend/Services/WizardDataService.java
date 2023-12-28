@@ -31,5 +31,15 @@ public class WizardDataService {
     public List<WizardData> getAllData() {
         return wizardDataRepo.findAll();
     }
+
+    
+
+    public WizardData saveDataWithAnswer(String jsonData, long id) {
+        wizardDataRepo.deleteById(id);
+        WizardData wizardData = new WizardData();
+        wizardData.setJsonData(jsonData);
+        WizardData res =wizardDataRepo.save(wizardData);
+        return res;
+    }
     
 }

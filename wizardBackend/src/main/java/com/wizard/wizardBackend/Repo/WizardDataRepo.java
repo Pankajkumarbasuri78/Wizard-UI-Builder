@@ -7,5 +7,7 @@ import com.wizard.wizardBackend.Modal.WizardData;
 
 @Repository
 public interface WizardDataRepo extends JpaRepository<WizardData,Long>{
+
+    // WizardData saveAndFlush(String jsonData, long id);
     
 }
