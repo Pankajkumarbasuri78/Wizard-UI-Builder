@@ -6,7 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.wizard.wizardBackend.Modal.Response;
 import com.wizard.wizardBackend.Modal.WizardData;
+import com.wizard.wizardBackend.Repo.ResponseRepo;
 import com.wizard.wizardBackend.Repo.WizardDataRepo;
 
 @Service
@@ -14,6 +16,9 @@ public class WizardDataService {
 
     @Autowired
     private WizardDataRepo wizardDataRepo;
+
+    @Autowired
+    private ResponseRepo responseRepo;
 
     public WizardData saveData(String jsonData) {
         WizardData wizardData = new WizardData();
@@ -46,6 +51,20 @@ public class WizardDataService {
         
         WizardData res= wizardDataRepo.save(newWizardData);
         return res;
+    }
+
+    public Response saveResponse(String jsonData, long id) {
+        Response newResponseData= Response.builder()
+            .wizardId(id)
+            .jsonDataResponse(jsonData)
+            .build();
+        
+        Response res= responseRepo.save(newResponseData);
+        return res;
+    }
+
+    public void deleteDataById(Long id) {
+        wizardDataRepo.deleteById(id);
     }
     
 }
