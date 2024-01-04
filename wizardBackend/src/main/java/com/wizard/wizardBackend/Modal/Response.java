@@ -25,6 +25,8 @@ public class Response {
     
     private Long wizardId;
 
+    private String name;
+
     @Column(columnDefinition = "LONGTEXT")
     private String jsonDataResponse;
 }

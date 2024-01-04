@@ -52,14 +52,7 @@ public class MyController {
         return new ResponseEntity<>(json, HttpStatus.OK);
     }
 
-    @PostMapping("/saveUserRes/{id}")
-    public ResponseEntity<?> saveResponse(@RequestBody String jsonData, @PathVariable long id) {
-
-        Response json = wizardDataService.saveResponse(jsonData, id);
-        System.out.println(json.getJsonDataResponse());
-
-        return new ResponseEntity<>(json, HttpStatus.OK);
-    }
+    
 
     @GetMapping("/getData")
     public List<WizardData> getAllData() {
@@ -69,7 +62,29 @@ public class MyController {
 
     }
 
-    @GetMapping("/getDataRes")
+    @GetMapping("/getData/{id}")
+    public Optional<WizardData> getData(@PathVariable("id") Long id) {
+        // Optional<WizardData> JsonData = wizardDataService.getData(id);
+
+        return wizardDataService.getData(id);
+
+    }
+
+   
+
+    @DeleteMapping("/deleteData/{id}")
+    public ResponseEntity<String> deleteDataById(@PathVariable Long id) {
+        try {
+            wizardDataService.deleteDataById(id);
+            return new ResponseEntity<>("Data with ID " + id + " deleted successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error deleting data with ID " + id, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //response
+
+     @GetMapping("/getDataRes")
     public List<Response> getAllDataRes() {
         // Optional<WizardData> JsonData = wizardDataService.getData(id);
         List<Response> list = responseRepo.findAll();
@@ -77,18 +92,36 @@ public class MyController {
 
     }
 
-    @GetMapping("/getData/{id}")
-    public Optional<WizardData> getData(@PathVariable Long id) {
+    @GetMapping("/getDataRes/{id}")
+    public Optional<Response> getResDataById(@PathVariable("id") Long wizardId) {
         // Optional<WizardData> JsonData = wizardDataService.getData(id);
-
-        return wizardDataService.getData(id);
+        Optional<Response> list = responseRepo.findById(wizardId);
+        System.out.println(list);
+        return list;
 
     }
 
-    @DeleteMapping("/deleteData/{id}")
-    public ResponseEntity<String> deleteDataById(@PathVariable Long id) {
+    // @PostMapping("/saveUserRes/{id}")
+    // public ResponseEntity<?> saveResponse(@RequestBody String jsonData, @PathVariable long id) {
+
+    //     Response json = wizardDataService.saveResponse(jsonData, id);
+    //     System.out.println(json.getJsonDataResponse());
+
+    //     return new ResponseEntity<>(json, HttpStatus.OK);
+    // }
+    @PostMapping("/saveUserRes/{id}/{name}")
+    public ResponseEntity<?> saveResponse(@RequestBody String jsonData, @PathVariable("id") long id, @PathVariable("name") String name) {
+
+        Response json = wizardDataService.saveResponse(jsonData, id,name);
+        System.out.println(json.getJsonDataResponse());
+
+        return new ResponseEntity<>(json, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/deleteDataRes/{id}")
+    public ResponseEntity<String> deleteDataResById(@PathVariable Long id) {
         try {
-            wizardDataService.deleteDataById(id);
+            responseRepo.deleteById(id);
             return new ResponseEntity<>("Data with ID " + id + " deleted successfully", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Error deleting data with ID " + id, HttpStatus.INTERNAL_SERVER_ERROR);

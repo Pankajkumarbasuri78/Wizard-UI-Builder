@@ -1,6 +1,7 @@
 package com.wizard.wizardBackend.Services;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,14 +54,26 @@ public class WizardDataService {
         return res;
     }
 
-    public Response saveResponse(String jsonData, long id) {
-        Response newResponseData= Response.builder()
+    public Response saveResponse(String jsonData, long id, String name) {
+
+        Response userData = responseRepo.findByNameAndWizarId(name,id);
+        if(userData == null){
+           Response newResponseData= Response.builder()
             .wizardId(id)
+            .name(name)
             .jsonDataResponse(jsonData)
             .build();
         
         Response res= responseRepo.save(newResponseData);
         return res;
+        }
+
+        // System.out.println(userData.getId());
+
+        userData.setJsonDataResponse(jsonData);
+        
+       return responseRepo.save(userData);
+
     }
 
     public void deleteDataById(Long id) {
