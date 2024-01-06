@@ -57,6 +57,7 @@ public class WizardDataService {
     public Response saveResponse(String jsonData, long id, String name) {
 
         Response userData = responseRepo.findByNameAndWizarId(name,id);
+
         if(userData == null){
            Response newResponseData= Response.builder()
             .wizardId(id)
@@ -78,6 +79,16 @@ public class WizardDataService {
 
     public void deleteDataById(Long id) {
         wizardDataRepo.deleteById(id);
+    }
+
+    //checking multiple user exist or not
+    public String checkUserRes(Long id, String name) {
+
+        Response userData = responseRepo.findByNameAndWizarId(name,id);
+        if(userData == null){
+            return "user not found";
+        }
+        return "user found";
     }
     
 }

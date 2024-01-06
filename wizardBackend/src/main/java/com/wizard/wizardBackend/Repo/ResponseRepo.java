@@ -13,4 +13,6 @@ public interface ResponseRepo extends JpaRepository<Response,Long> {
     @Query("SELECT c from Response c WHERE c.name = :name AND c.wizardId = :id")
 Response findByNameAndWizarId(@Param("name")String name, @Param("id")Long id);
 
+
+
 } 

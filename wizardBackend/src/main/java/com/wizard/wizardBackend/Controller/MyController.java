@@ -118,6 +118,14 @@ public class MyController {
         return new ResponseEntity<>(json, HttpStatus.OK);
     }
 
+    @PostMapping("/checkUserRes/{id}/{name}")
+    public ResponseEntity<String> checkUserRes(@PathVariable("id") Long id, @PathVariable("name") String name){
+
+        String message = wizardDataService.checkUserRes(id,name);
+        
+        return new ResponseEntity<>(message,HttpStatus.OK);
+    }
+
     @DeleteMapping("/deleteDataRes/{id}")
     public ResponseEntity<String> deleteDataResById(@PathVariable Long id) {
         try {
