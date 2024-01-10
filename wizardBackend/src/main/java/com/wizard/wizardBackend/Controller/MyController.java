@@ -136,4 +136,13 @@ public class MyController {
         }
     }
 
+    @PostMapping("/pankajRes")
+    public ResponseEntity<?> saveResponseData(@RequestBody String jsonData) {
+
+        // Response json = wizardDataService.saveResponse(jsonData);
+        // System.out.println(json.getJsonDataResponse());
+
+        return new ResponseEntity<>(jsonData, HttpStatus.OK);
+    }
+
 }
